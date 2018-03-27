@@ -1,61 +1,61 @@
 @extends('home')
 @section('survey')
-<form>
 
-    <div class="form-group"> <!-- Radio group !-->
-        <label class="control-label">What is your favorite food?</label>
-        <div class="radio">
-            <label>
-            <input type="radio" name="fav_foods" value="pizza">
-            Pizza
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-            <input type="radio"  name="fav_foods" value="hamburger">
-            Hamburgers
-            </label>
-        </div>
-    </div>		
+<form method="POST" action="{{route('result')}}" >
+    {{ csrf_field() }}
+    @if (count ($questions)>0) 
+        @foreach($questions as $ques)                                  
+            @if($ques->type == "text")
+                <label class="control-label"> Cau {{$ques->id}}: {{$ques->question}}</label>              
+                @foreach($users as $user)
+                @if ($user->nhom == $id_nhom)
+                    <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label>{{$user->name}}-{{$user->MSSV}}</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" name="diem{{$dem++}}" placeholder="Diem">
+                    </div>
+                    </div>
+                    
+                @endif
+                @endforeach
 
-    <div class="form-group"> <!-- Radio group !-->
-        <label class="control-label">What is your favorite fruit?</label>
-        <div class="radio">
-            <label>
-            <input type="radio" name="fav_foods" value="pizza">
-            Xoai
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-            <input type="radio"  name="fav_foods" value="hamburger">
-            Dau
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-            <input type="radio"  name="fav_foods" value="hamburger">
-            Chom chom
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-            <input type="radio"  name="fav_foods" value="hamburger">
-            Sau rieng
-            </label>
-        </div>
-    </div>	
+            @else
+          
+                <div class="form-group"> 
+                    <label class="control-label" name="question" > Cau {{$ques->id}}: {{$ques->question}}</label>
+                    <div class="radio">
+                        <label>
+                        <input type="radio" name="answer{{$ques->id}}" value="{{$ques->answer1}}"/>
+                        {{$ques->answer1}}
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input type="radio"  name="answer{{$ques->id}}" value="{{$ques->answer2}}" checked=checked />
+                        {{$ques->answer2}}
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input type="radio"  name="answer{{$ques->id}}" value="{{$ques->answer3}}"/>
+                        {{$ques->answer3}}
+                        </label>
+                    </div>
+                </div>        	
+           
+            @endif       
+        @endforeach
+        {{$questions->links()}};
 
-    {{--  <div class="form-group"> <!-- Submit button !-->
-        <button class="btn btn-primary " name="submit" type="submit">Submit</button>
-    </div>  --}}
-    
+    @endif 
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </form>
 
-<nav class="blog-pagination">
-    {{--  <a class="btn btn-outline-primary" href="#" >Previous</a>
-    <a class="btn btn-outline-primary" href="#">Next</a>  --}}
-    <button class="pull-right" href="#">Next</button>
-    <button class="pull-right" href="#">Previous</button>
-</nav>
 @endsection
+
+
+

@@ -25,6 +25,7 @@ Route::prefix('admin')->group(function() {
   Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
   Route::get('/', 'AdminController@index')->name('admin.dashboard');
 });
-Route::get('/home/survey', function(){
-    return view('student.survey');
-})->name('survey');
+Route::prefix('home')->group(function() {
+  Route::get('/survey', 'QuestionController@index')->name('survey');
+  Route::post('/results', 'ResultController@store')->name('result');
+});
